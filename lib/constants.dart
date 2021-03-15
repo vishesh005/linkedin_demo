@@ -1,0 +1,1 @@
+const IS_USER_LOGGED_IN ="USER_ENABLED";
