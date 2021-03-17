@@ -167,15 +167,31 @@ class DashboardHomeWidget extends StatefulWidget {
 }
 
 class _DashboardHomeWidgetState extends State<DashboardHomeWidget> {
-  List<Story> stories = [];
+  List<Story> stories = [
+    ...List.generate(100, (index) => Story())
+  ];
+  List<UserActivity> userActivities = [
+    ...List.generate(100, (index) => UserActivity())
+  ];
+  final scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
+        Container(
           height: 100,
-          child: ListView.builder(itemBuilder: (context,position) => StoryWidget()
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: stories.length,
+              itemBuilder: (context,position) => StoryWidget(stories[position], isCreate: position == 0,)
           ),
+        ),
+        Expanded(
+            child: ListView.builder(
+                controller: scrollController,
+                itemCount: userActivities.length,
+                itemBuilder:(context,position)=> UserActivityWidget(userActivities[position]))
         )
       ],
     );
@@ -183,6 +199,12 @@ class _DashboardHomeWidgetState extends State<DashboardHomeWidget> {
 }
 
 class StoryWidget extends StatefulWidget {
+
+
+  final Story story;
+  final isCreate;
+  StoryWidget(this.story,{this.isCreate = false});
+
   @override
   _StoryWidgetState createState() => _StoryWidgetState();
 }
@@ -190,7 +212,60 @@ class StoryWidget extends StatefulWidget {
 class _StoryWidgetState extends State<StoryWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return widget.isCreate ?
+    Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 1, horizontal: 5),
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 2),
+              image: DecorationImage(
+                  image: AssetImage("resource/images/face.jpeg"),
+                  fit: BoxFit.contain)),
+        ),
+        Positioned(
+          child: Icon(
+            Icons.add_circle,
+            color: Colors.white,
+          ),
+
+        )
+      ],
+    )
+        :
+    Container(
+      height: 90,
+      width: 90,
+      margin: EdgeInsets.symmetric(vertical: 1, horizontal: 5),
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.red, width: 2),
+          image: DecorationImage(
+              image: AssetImage("resource/images/face.jpeg"),
+              fit: BoxFit.contain)),
+    );
+  }
+}
+
+
+class UserActivityWidget extends StatefulWidget {
+
+  UserActivityWidget(UserActivity userActivity);
+
+  @override
+  _UserActivityWidgetState createState() => _UserActivityWidgetState();
+}
+
+class _UserActivityWidgetState extends State<UserActivityWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.green,
+      width: 90,
+      height: 90,
+      margin: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
+    );
   }
 }
 
