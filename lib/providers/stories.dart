@@ -83,5 +83,5 @@ class FixText{
 
 
 class UserActivity{
-
+   bool isLikedByMe = true;
 }
