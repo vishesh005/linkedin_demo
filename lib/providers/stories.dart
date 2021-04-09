@@ -81,3 +81,7 @@ class FixText{
   FixText(this.x, this.y, this.text, [this.isHyperlink= false]);
 }
 
+
+class UserActivity{
+   bool isLikedByMe = true;
+}
